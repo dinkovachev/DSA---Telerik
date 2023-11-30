@@ -5,10 +5,8 @@ import com.company.dsa.Node;
 import java.util.NoSuchElementException;
 
 public class LinkedStack<E> implements Stack<E> {
-
     private Node<E> top;
     private int size;
-
 
     public LinkedStack() {
         this.top = null;
@@ -35,10 +33,10 @@ public class LinkedStack<E> implements Stack<E> {
         if (isEmpty()) {
             throw new NoSuchElementException();
         }
-        E temp = top.data;
+        E tempNode = top.data;
         top = top.next;
         size--;
-        return temp;
+        return tempNode;
     }
 
     @Override

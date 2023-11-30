@@ -2,33 +2,62 @@ package com.company.dsa.queue;
 
 import com.company.dsa.Node;
 
+import java.util.NoSuchElementException;
+
 public class LinkedQueue<E> implements Queue<E> {
     private Node<E> head, tail;
     private int size;
 
+    public LinkedQueue(){
+        this.head = null;
+        this.tail = null;
+        this.size = 0;
+    }
+
 
     @Override
     public void enqueue(E element) {
-        throw new UnsupportedOperationException();
+        if (tail == null){
+            tail = new Node<>();
+            tail.data = element;
+            tail.next = null;
+            head = tail;
+        } else {
+            Node<E> tempNode = new Node<>();
+            tempNode.data = element;
+            tempNode.next = null;
+            tail = tempNode;
+        }
+        size++;
     }
 
     @Override
     public E dequeue() {
-        throw new UnsupportedOperationException();
+        if (head == null){
+            throw new NoSuchElementException();
+        } else {
+            E tempNode = head.data;
+            head = head.next;
+            size--;
+            return tempNode;
+        }
     }
 
     @Override
     public E peek() {
-        throw new UnsupportedOperationException();
+        if (head==null){
+            throw new NoSuchElementException();
+        }
+        return head.data;
     }
 
     @Override
     public int size() {
-        throw new UnsupportedOperationException();
+        return size;
     }
 
     @Override
     public boolean isEmpty() {
-        throw new UnsupportedOperationException();
+        return size == 0;
     }
 }
