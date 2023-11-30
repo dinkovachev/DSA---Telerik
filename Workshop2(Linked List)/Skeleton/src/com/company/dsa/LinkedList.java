@@ -29,6 +29,10 @@ public class LinkedList<T> implements List<T> {
     @Override
     public void addLast(T value) {
         Node newNode = new Node(value);
+        if (size == 0) {
+            tail = head = newNode;
+        }
+
         newNode.next = null;
         tail.next = newNode;
         newNode.prev = tail;
@@ -38,18 +42,26 @@ public class LinkedList<T> implements List<T> {
 
     @Override
     public void add(int index, T value) {
+        Node newNode = new Node(value);
         if (index < 0 || index > size) {
             throw new NoSuchElementException();
+        } else if (index == 0) {
+            addFirst(value);
+        } else if (index == size) {
+            addLast(value);
+        } else {
+            Node current = head;
+
+            for (int i = 1; i < index; i++) {
+                current = current.next;
+            }
+            Node temp = current.next;
+            current.next = newNode;
+            newNode.prev = current;
+            newNode.next = temp;
+            temp.prev = newNode;
+            size++;
         }
-        Node newNode = new Node(value);
-        newNode.next = tail;
-        tail.prev = newNode;
-        Node current = head;
-        for (int i = 0; i < index; i++) {
-            current = current.next;
-        }
-        current.next = newNode;
-        size++;
     }
 
     @Override
@@ -71,10 +83,13 @@ public class LinkedList<T> implements List<T> {
     @Override
     public T get(int index) {
         Node targetElement = head;
+        if (index < 0 || index > size) {
+            throw new NoSuchElementException();
+        }
         for (int i = 0; i < index; i++) {
             targetElement = targetElement.next;
         }
-        ;
+
         return targetElement.value;
     }
 
@@ -83,13 +98,20 @@ public class LinkedList<T> implements List<T> {
         if (size == 0) {
             return -1;
         }
+        if (size == 1) {
+            return 0;
+        }
         Node targetElement = head;
         int index = 0;
         for (int i = 0; i < size; i++) {
-            targetElement = targetElement.next;
-            if (targetElement.value == value) {
-                index = i;
+            if (i == size - 1 && targetElement.value != value) {
+                return -1;
             }
+            if (targetElement.value == value) {
+                break;
+            }
+            index++;
+            targetElement = targetElement.next;
         }
         return index;
     }
@@ -99,11 +121,12 @@ public class LinkedList<T> implements List<T> {
         if (size == 0) {
             throw new NoSuchElementException();
         }
-        Node firstElement = head;
-        for (int i = 0; i < 1; i++) {
-            firstElement = firstElement.next;
+        if (size == 1) {
+            size--;
+            return head.value;
         }
-        head = firstElement;
+        Node firstElement = head;
+        head = head.next;
         size--;
         return firstElement.value;
     }
