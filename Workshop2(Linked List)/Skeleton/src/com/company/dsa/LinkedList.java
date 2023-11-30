@@ -10,8 +10,6 @@ public class LinkedList<T> implements List<T> {
 
 
     public LinkedList() {
-        head = null;
-        tail = null;
     }
 
     public LinkedList(Iterable<T> iterable) {
