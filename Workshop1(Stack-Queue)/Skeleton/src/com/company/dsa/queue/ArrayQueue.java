@@ -4,6 +4,13 @@ public class ArrayQueue<E> implements Queue<E> {
     private E[] items;
     private int head, tail, size;
 
+    public ArrayQueue(){
+        head = 0;
+        tail = 0;
+        size = 0;
+        items = (E[]) new Object[size];
+    }
+
 
     @Override
     public void enqueue(E element) {

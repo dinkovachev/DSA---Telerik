@@ -8,7 +8,7 @@ public class LinkedQueue<E> implements Queue<E> {
     private Node<E> head, tail;
     private int size;
 
-    public LinkedQueue(){
+    public LinkedQueue() {
         this.head = null;
         this.tail = null;
         this.size = 0;
@@ -17,7 +17,8 @@ public class LinkedQueue<E> implements Queue<E> {
 
     @Override
     public void enqueue(E element) {
-        if (tail == null){
+
+        if (isEmpty()) {
             tail = new Node<>();
             tail.data = element;
             tail.next = null;
@@ -26,6 +27,7 @@ public class LinkedQueue<E> implements Queue<E> {
             Node<E> tempNode = new Node<>();
             tempNode.data = element;
             tempNode.next = null;
+            tail.next = tempNode;
             tail = tempNode;
         }
         size++;
@@ -33,7 +35,7 @@ public class LinkedQueue<E> implements Queue<E> {
 
     @Override
     public E dequeue() {
-        if (head == null){
+        if (head == null) {
             throw new NoSuchElementException();
         } else {
             E tempNode = head.data;
@@ -45,7 +47,7 @@ public class LinkedQueue<E> implements Queue<E> {
 
     @Override
     public E peek() {
-        if (head==null){
+        if (isEmpty()) {
             throw new NoSuchElementException();
         }
         return head.data;

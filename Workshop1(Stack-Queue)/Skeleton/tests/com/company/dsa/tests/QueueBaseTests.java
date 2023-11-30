@@ -1,6 +1,7 @@
 package com.company.dsa.tests;
 
 import com.company.dsa.queue.ArrayQueue;
+import com.company.dsa.queue.LinkedQueue;
 import com.company.dsa.queue.Queue;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
