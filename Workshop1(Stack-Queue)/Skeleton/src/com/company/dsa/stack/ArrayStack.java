@@ -19,12 +19,9 @@ public class ArrayStack<E> implements Stack<E> {
             E[] newArray = (E[]) new Object[maxSize * 2];
             System.arraycopy(items, 0, newArray, 0, maxSize * 2);
             items = newArray;
-            top++;
-            items[top] = element;
-        } else {
-            top++;
-            items[top] = element;
         }
+        top++;
+        items[top] = element;
     }
 
     @Override

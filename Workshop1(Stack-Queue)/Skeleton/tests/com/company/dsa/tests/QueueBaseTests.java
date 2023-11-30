@@ -123,7 +123,7 @@ public abstract class QueueBaseTests {
     public void addLast_Should_MaintainCorrectOrder() {
         // Arrange & Act
         List<Integer> expected = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));
-        queue = new ArrayQueue<>();
+        queue = new LinkedQueue<>();
         queue.enqueue(1);
         queue.enqueue(2);
         queue.enqueue(3);
