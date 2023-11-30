@@ -2,35 +2,60 @@ package com.company.dsa.stack;
 
 import com.company.dsa.Node;
 
+import java.util.NoSuchElementException;
+
 public class LinkedStack<E> implements Stack<E> {
-
-
 
     private Node<E> top;
     private int size;
 
+
+    public LinkedStack() {
+        this.top = null;
+        this.size = 0;
+    }
+
     @Override
     public void push(E element) {
-        throw new UnsupportedOperationException();
+        if (top == null) {
+            top = new Node<>();
+            top.data = element;
+            top.next = null;
+        } else {
+            Node<E> tempNode = new Node<>();
+            tempNode.data = element;
+            tempNode.next = top;
+            top = tempNode;
+        }
+        size++;
     }
 
     @Override
     public E pop() {
-        throw new UnsupportedOperationException();
+        if (isEmpty()) {
+            throw new NoSuchElementException();
+        }
+        E temp = top.data;
+        top = top.next;
+        size--;
+        return temp;
     }
 
     @Override
     public E peek() {
-        throw new UnsupportedOperationException();
+        if (isEmpty()){
+            throw new NoSuchElementException();
+        }
+        return top.data;
     }
 
     @Override
     public int size() {
-        throw new UnsupportedOperationException();
+        return size;
     }
 
     @Override
     public boolean isEmpty() {
-        throw new UnsupportedOperationException();
+        return size == 0;
     }
 }
