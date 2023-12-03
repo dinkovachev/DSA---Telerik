@@ -4,7 +4,7 @@ import java.util.NoSuchElementException;
 
 public class ArrayQueue<E> implements Queue<E> {
     private E[] items;
-    private final int head;
+    private int head;
     private int tail;
     private int size;
     private final int maximumCapacity = 10;
@@ -42,7 +42,9 @@ public class ArrayQueue<E> implements Queue<E> {
         if (isEmpty()) {
             throw new NoSuchElementException();
         } else {
-            return items[head];
+            E deletedItem = items[head];
+            head++;
+            return deletedItem;
         }
     }
 

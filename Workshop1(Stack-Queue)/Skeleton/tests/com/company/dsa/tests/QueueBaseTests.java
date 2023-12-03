@@ -64,6 +64,7 @@ public abstract class QueueBaseTests {
         queue.enqueue(2);
         // Act, Assert
         Assertions.assertEquals(1, queue.dequeue());
+        Assertions.assertEquals(2, queue.dequeue());
     }
 
     @Test
