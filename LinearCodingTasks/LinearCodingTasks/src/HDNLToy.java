@@ -15,16 +15,21 @@ public class HDNLToy {
         StringBuilder result = new StringBuilder();
 
         for (int i = 0; i < n; i++) {
+            StringBuilder numberAsString = new StringBuilder();
             String input = scanner.nextLine();
             char letter = input.toLowerCase().charAt(0);
-            int number = Character.getNumericValue(input.charAt(1));
+
+            int number = 0;
+            for (int j = 1; j < input.length(); j++) {
+                numberAsString.append(Character.getNumericValue(input.charAt(j)));
+                number = Integer.parseInt(String.valueOf(numberAsString));
+            }
+
             String spaces = String.join("", Collections.nCopies(stackInteger.size(), " "));
             if (stackInteger.isEmpty() || number > stackInteger.peek()) {
+                stackInteger.add(number);
                 if (Character.isAlphabetic(letter)) {
                     stackString.add(letter);
-                }
-                if (number >= 1 && number <= 1000) {
-                    stackInteger.add(number);
                 }
                 result.append(spaces).
                         append("<").
@@ -56,8 +61,8 @@ public class HDNLToy {
                         append(System.lineSeparator());
             }
         }
-        while (!stackInteger.isEmpty()){
-            String spaces = String.join("",Collections.nCopies(stackInteger.size() - 1, " "));
+        while (!stackInteger.isEmpty()) {
+            String spaces = String.join("", Collections.nCopies(stackInteger.size() - 1, " "));
             result.append(spaces).
                     append("<").
                     append("/").
