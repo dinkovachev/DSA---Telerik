@@ -58,9 +58,7 @@ public class NoahsArk {
             } else {
                 animals.put(animalName, animalCounter);
             }
-
         }
-
         for (String name: animals.keySet().stream().sorted().collect(Collectors.toList())) {
             if (animals.get(name) % 2 == 0){
                 result.append(name).append(" ").append(animals.get(name).toString()).append(" ").append("Yes").
@@ -70,8 +68,6 @@ public class NoahsArk {
                         append(System.lineSeparator());
             }
         }
-
         System.out.println(result);
-
     }
 }
