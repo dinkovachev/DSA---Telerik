@@ -1,16 +1,17 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class InventoryManager {
 
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        String[] input = scanner.nextLine().split(" ");
+    public static void main(String[] args) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
-        Set<Products> inventory = new HashSet<>();
+        String[] input = reader.readLine().split(" ");
 
-        StringBuilder result = new StringBuilder();
-
+        Set<Products> inventory = new TreeSet<>();
 
         while (!input[0].equals("end")) {
             switch (input[0]) {
@@ -18,60 +19,62 @@ public class InventoryManager {
                     Products newProduct = new Products(input[1], Double.parseDouble(input[2]), input[3]);
                     if (!inventory.contains(newProduct)) {
                         inventory.add(newProduct);
-                        result.append(String.format("Ok: Item %s added successfully%n", newProduct.getItemName()));
+                        System.out.printf("Ok: Item %s added successfully%n", newProduct.getItemName());
                     } else {
-                        result.append(String.format("Error: Item %s already exists%n", newProduct.getItemName()));
+                        System.out.printf("Error: Item %s already exists%n", newProduct.getItemName());
                     }
+                    break;
                 case "filter":
                     switch (input[2]) {
                         case "type":
                             String type = input[3];
                             if (inventory.stream().anyMatch(products -> products.getItemType().equals(type))) {
-                                List<Products> filteredByType = inventory.stream().sorted().
+                                List<Products> filteredByType = inventory.stream().
                                         filter(products -> products.getItemType().equals(type)).
                                         limit(10).
                                         collect(Collectors.toList());
-                                print(result, filteredByType);
+                                System.out.print(print(filteredByType));
                             } else {
-                                result.append(String.format("Error: Type %s does not exist%n", type));
+                                System.out.printf("Error: Type %s does not exist%n", type);
                             }
                         case "price":
-                            if (input[3].equals("from")) {
-                                if (input.length == 7) {
+                            switch (input[3]) {
+                                case "from":
                                     double minPrice = Double.parseDouble(input[4]);
-                                    double maxPrice = Double.parseDouble(input[6]);
-                                    List<Products> filteredByPriceInRangeFromTo = inventory.stream().sorted().
+                                    if (input.length == 7) {
+                                        double maxPrice = Double.parseDouble(input[6]);
+                                        List<Products> filteredByPriceInRangeFromTo = inventory.stream().
+                                                filter(products -> products.getItemPrice() <= maxPrice).
+                                                filter(products -> products.getItemPrice() >= minPrice).
+                                                limit(10).
+                                                collect(Collectors.toList());
+                                        System.out.print(print(filteredByPriceInRangeFromTo));
+                                    } else {
+                                        List<Products> filteredByPriceFrom = inventory.stream().
+                                                filter(products -> products.getItemPrice() >= minPrice).
+                                                limit(10).
+                                                collect(Collectors.toList());
+                                        System.out.print(print(filteredByPriceFrom));
+                                    }
+                                    break;
+                                case "to":
+                                    double maxPrice = Double.parseDouble(input[4]);
+                                    List<Products> filteredByPriceTo = inventory.stream().
                                             filter(products -> products.getItemPrice() <= maxPrice).
-                                            filter(products -> products.getItemPrice() >= minPrice).
                                             limit(10).
                                             collect(Collectors.toList());
-                                    print(result, filteredByPriceInRangeFromTo);
-                                } else {
-                                    double minPrice = Double.parseDouble(input[4]);
-                                    List<Products> filteredByPriceFrom = inventory.stream().sorted().
-                                            filter(products -> products.getItemPrice() >= minPrice).
-                                            limit(10).
-                                            collect(Collectors.toList());
-                                    print(result, filteredByPriceFrom);
-                                }
-                            } else if (input[3].equals("to")) {
-                                double maxPrice = Double.parseDouble(input[4]);
-                                List<Products> filteredByPriceTo = inventory.stream().sorted().
-                                        filter(products -> products.getItemPrice() <= maxPrice).
-                                        limit(10).
-                                        collect(Collectors.toList());
-                                print(result, filteredByPriceTo);
+                                    System.out.print(print(filteredByPriceTo));
+                                    break;
                             }
                     }
             }
-            input = scanner.nextLine().split(" ");
+            input = reader.readLine().split(" ");
         }
-        System.out.println(result);
     }
 
-    public static String print(StringBuilder result, List<Products> filteredProducts) {
+    public static String print(List<Products> filteredProducts) {
+        StringBuilder result = new StringBuilder("Ok: ");
         if (filteredProducts.size() != 0) {
-            result.append("Ok: ");
             for (Products products : filteredProducts) {
                 result.append(String.format("%s(%.2f)",
                         products.getItemName(),
@@ -82,9 +85,7 @@ public class InventoryManager {
             result.deleteCharAt(result.length() - 1);
             result.append(System.lineSeparator());
         } else {
-            result.append("Ok: ");
             result.append(System.lineSeparator());
-
         }
         return result.toString();
     }
@@ -128,23 +129,26 @@ public class InventoryManager {
         }
 
         @Override
+        public int compareTo(Products o) {
+            if (this.getItemPrice() < o.getItemPrice())
+                return -1;
+            if (this.getItemPrice() > o.getItemPrice())
+                return 1;
+            return this.getItemName().compareTo(o.getItemName());
+        }
+
+        @Override
         public boolean equals(Object o) {
             if (this == o) return true;
-            if (!(o instanceof Products)) return false;
+            if (o == null || getClass() != o.getClass()) return false;
             Products products = (Products) o;
-            return getItemName().equals(products.getItemName());
+            return Double.compare(products.itemPrice, itemPrice) == 0 && itemName.equals(products.itemName)
+                    && itemType.equals(products.itemType);
         }
 
         @Override
         public int hashCode() {
             return Objects.hash(itemName, itemPrice, itemType);
-        }
-
-        @Override
-        public int compareTo(Products o) {
-            if (this.getItemPrice() < o.getItemPrice()) return -1;
-            if (this.getItemPrice() > o.getItemPrice()) return 1;
-            return this.getItemName().compareTo(o.getItemName());
         }
     }
 }

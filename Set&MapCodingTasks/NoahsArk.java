@@ -59,15 +59,16 @@ public class NoahsArk {
                 animals.put(animalName, animalCounter);
             }
         }
-        for (String name: animals.keySet().stream().sorted().collect(Collectors.toList())) {
-            if (animals.get(name) % 2 == 0){
+        for (String name : animals.keySet().stream().sorted().collect(Collectors.toList())) {
+            if (animals.get(name) % 2 == 0) {
                 result.append(name).append(" ").append(animals.get(name).toString()).append(" ").append("Yes").
                         append(System.lineSeparator());
-            }else {
+            } else {
                 result.append(name).append(" ").append(animals.get(name).toString()).append(" ").append("No").
                         append(System.lineSeparator());
             }
         }
         System.out.println(result);
+
     }
 }
