@@ -1,12 +1,16 @@
 package RecursionTasks;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Scanner;
 
 public class LargestSurface {
 
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        String[] sizeInput = scanner.nextLine().split(" ");
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        String[] sizeInput = reader.readLine().split(" ");
         int[] sizeInt = new int[sizeInput.length];
         for (int i = 0; i < sizeInput.length; i++) {
             sizeInt[i] = Integer.parseInt(sizeInput[i]);
@@ -17,7 +21,7 @@ public class LargestSurface {
         int[][] matrix = new int[row][col];
 
         for (int i = 0; i < row; i++) {
-            input = scanner.nextLine().split(" ");
+            input = reader.readLine().split(" ");
             for (int j = i; j < row; j++) {
                 for (int k = 0; k < col; k++) {
                     matrix[j][k] = Integer.parseInt(input[k]);
@@ -49,16 +53,12 @@ public class LargestSurface {
         }
         matrix[row][col] = -1;
 
-        return calculatePath(matrix, row, col, currentElement, path);
-
-    }
-
-    private static int calculatePath(int[][] matrix, int row, int col, int currentElement, int path) {
-        path += dfs(matrix, row, col + 1, currentElement); // right
-        path += dfs(matrix, row, col - 1, currentElement); // left
-        path += dfs(matrix, row - 1, col, currentElement); // up
-        path += dfs(matrix, row + 1, col, currentElement); // down
+        path += dfs(matrix, row, col + 1, currentElement);
+        path += dfs(matrix, row, col - 1, currentElement);
+        path += dfs(matrix, row - 1, col, currentElement);
+        path += dfs(matrix, row + 1, col, currentElement);
         return path;
+
     }
 
     public static boolean isOutOfMatrix(int[][] matrix, int row, int col) {
