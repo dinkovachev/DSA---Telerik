@@ -25,5 +25,5 @@ public interface BinarySearchTree<E extends Comparable<E>> {
     int height();
 
     // Advanced task: implement remove method. To test, uncomment the commented tests in BinaryTreeImplTests
-//    boolean remove(E value);
+    boolean remove(E value);
 }

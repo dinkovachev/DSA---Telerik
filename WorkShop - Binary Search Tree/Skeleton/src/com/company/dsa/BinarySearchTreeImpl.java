@@ -58,13 +58,12 @@ public class BinarySearchTreeImpl<E extends Comparable<E>> implements BinarySear
     }
 
     public boolean searchRecursive(E valueToSearch) {
-        boolean valueExist = false;
         if (valueToSearch.compareTo(this.value) == 0) {
-            valueExist = true;
+            return true;
         }
         if (this.left == null && this.right == null) {
             if (valueToSearch.compareTo(this.value) == 0) {
-                valueExist = true;
+                return true;
             }
         }
         if (this.left != null && valueToSearch.compareTo(this.value) <= 0) {
@@ -73,7 +72,7 @@ public class BinarySearchTreeImpl<E extends Comparable<E>> implements BinarySear
         } else if (this.right != null && valueToSearch.compareTo(this.value) > 0) {
             return this.right.searchRecursive(valueToSearch);
         }
-        return valueExist;
+        return false;
     }
 
     @Override
@@ -151,7 +150,7 @@ public class BinarySearchTreeImpl<E extends Comparable<E>> implements BinarySear
     }
 
     public int heightRecursion(BinarySearchTreeImpl<E> root) {
-        if (root == null){
+        if (root == null) {
             return -1;
         }
         if (this.left == null && this.right == null) {
@@ -161,11 +160,36 @@ public class BinarySearchTreeImpl<E extends Comparable<E>> implements BinarySear
         int rightHeight = heightRecursion(root.right);
         return Math.max(leftHeight + 1, rightHeight + 1);
     }
-}
 
-// Advanced task: implement remove method. To test, uncomment the commented tests in BinaryTreeImplTests
-//    @Override
-//    public boolean remove(E value) {
-//        throw new UnsupportedOperationException();
-//    }
+
+    // Advanced task: implement remove method. To test, uncomment the commented tests in BinaryTreeImplTests
+    @Override
+    public boolean remove(E value) {
+
+        return removeRecursive(value, this);
+    }
+
+    public boolean removeRecursive(E valueToAdd, BinarySearchTreeImpl<E> root) {
+        if (root == null) {
+            return false;
+        }
+        if (valueToAdd == root.value) {
+            if (root.left == null && root.right == null) {
+                root = null;
+            } else if (root.right == null) {
+                root = root.left;
+            } else if (root.left == null) {
+                root = root.right;
+            } else {
+                root.value = root.left.value;
+                return removeRecursive(root.value, root.left);
+            }
+        } else if (valueToAdd.compareTo(root.value) <= 0) {
+            return removeRecursive(valueToAdd, root.left);
+        } else {
+            return removeRecursive(valueToAdd, root.right);
+        }
+        return true;
+    }
+}
 
